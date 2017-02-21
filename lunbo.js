@@ -5,13 +5,28 @@ function Carousel (){
 Carousel.prototype = {
     //初始化一些东西，做一些定义，传入参数为待绑定id，与图片数据数组
     init:function(id,imgurl){
+        if(typeof(id)!=='object'){
+            console.error('输入对象类型需要是obj,输入id不好使');
+        }
+        if(id.nodeName !== 'DIV'){
+            console.error('绑定的要是一个div，别的不行')
+        }
+        if(!imgurl instanceof Array){
+            console.error('第二个参数必须是数组，别的不行')
+        }
+        if(imgurl.length==0){
+            console.error('是的 空数组也不行')
+        }
+        imgurl.map(function(val){
+            if(!val.href || !val.url){
+                console.error('你得输入数据啊！！！')
+            }
+        });
         var warp;
         var startX,startY,moveX,moveY;
-        var num = 0;
-        var imgnum = imgurl.length;
+        var num = 1;
         var warpimg;
         this.imgnum =  imgurl.length;
-        console.log(this.imgnum)
         this.shows(id,imgurl);
     },
     //插件结构，传入参数为待绑定id，与图片数据数组
@@ -19,16 +34,13 @@ Carousel.prototype = {
         //乱七八糟的把结构弄起来
         var _this =this;
         warp = document.createElement('div');
-        warp.setAttribute('class','index_header_carousel');
         warp.style.overflow = 'hidden';
         warp.style.width = '100%';
         warpimg = document.createElement('div');
         warpimg.style.width = imgurl.length+'00%';
-        warpimg.setAttribute('class','index_header_carousel_img');
         warpimg.style.position = 'relative';
         warpimg.style.transition = '1s all';
         var control = document.createElement('div');
-        control.setAttribute('class','index_header_carousel_nav');
         control.style.height = '0.5rem';
         control.style.margin = '-0.714em auto';
         control.style.position = 'relative';
